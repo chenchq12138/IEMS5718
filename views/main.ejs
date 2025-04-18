@@ -17,17 +17,16 @@
         </form>
       </div>
     </nav>
-    <div class="user-info">
-      <% if (user && user.isLoggedIn) { %>
-        <!-- 用户已登录 -->
-        <span>Welcome, <%= user.name %>!</span>
-        <button><a href="/logout">Logout</a></button>
-      <% } else { %>
-        <!-- 用户未登录 -->
-        <button><a href="/login">Login / Sign Up</a></button>
-      <% } %>
-    </div>  
-    <button><a href="/admin">log in as administrators</a></button>
+    <div class="user-info-container">
+      <div class="user-info">
+        <% if (user && user.isLoggedIn) { %>
+          <span>Welcome, <%= user.name %>!</span>
+          <button><a href="/logout">Logout</a></button>
+        <% } else { %>
+          <button><a href="/login">Login / Sign Up</a></button>
+        <% } %>
+      </div>
+    </div>
   </header>
 
   <main>
