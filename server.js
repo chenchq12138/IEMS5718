@@ -114,8 +114,8 @@ server.listen(PORT, () => {
 });
 
 // demo
-server.get('demo/', (req, res) => {
-    console.log(`demo`);
+server.get('/demo', (req, res) => {
+    res.render('demo');
 });
 
 // 登录界面
