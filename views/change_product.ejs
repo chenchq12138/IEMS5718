@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Product</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <h1>My Shopping Website</h1>
+    <nav>
+      <div class="search-container">
+        <form id="search-form">
+          <input type="text" id="search-input" placeholder="please enter product name...">
+          <button type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="breadcrumb">
+      <a href="/">Home</a> > <a href="/admin">Admin Panel</a> > Change Product
+    </div>
+
+    <section class="add-product">
+      <h2>Change Product Details</h2>
+      <form id="add-product" action="/change-product" method="POST" enctype="multipart/form-data">
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" name="name" value=<%= product.name %> required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required><%= product.description %></textarea>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" value=<%= product.price %> required>
+
+        <label for="category">Category:</label>
+        <select id="catid" name="catid" required>
+          <% if (categories && categories.length > 0) { %>
+              <% categories.forEach(function(category) { %>
+                  <option value="<%= category.catid %>"><%= category.name %></option>
+              <% }); %>
+          <% } else { %>
+              <option disabled selected>No categories available</option>
+          <% } %>
+        </select>
+
+        <label for="image">Product Image:</label>
+        <input type="file" id="image" name="image" accept="image/*">
+
+        <button type="submit">Update Details</button>
+      </form>
+      <div id="message"></div> <!-- 添加这个元素来显示消息 -->
+    </section>
+  </main>
+
+  <footer>
+    <p>CHEN Chaoqun 1155224919</p>
+  </footer>
+
+  <script nonce="<%= locals.nonce %>">
+    const csrfToken = '<%= csrfToken %>';
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('add-product');
+      
+      if (!form) {
+        console.error('Form with ID "product-form" not found.');
+        return;
+      }
+
+      form.addEventListener('submit', async function(event) {
+        event.preventDefault(); 
+
+        const formData = new FormData(form);
+        formData.append('csrfToken', csrfToken);
+        for (let pair of formData.entries()) {
+          console.log(pair[0] + ': ' + pair[1]);
+        } 
+
+        try {
+          const response = await fetch('/change-product', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            document.getElementById('message').textContent = 'Product added successfully!';
+            form.reset(); // 清空表单
+          } else {
+            const error = await response.text();
+            document.getElementById('message').textContent = `Error: ${error}`;
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          document.getElementById('message').textContent = 'An error occurred while adding the product.';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
