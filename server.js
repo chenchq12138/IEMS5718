@@ -116,6 +116,11 @@ server.listen(PORT, () => {
 
 // demo
 server.get('/demo', (req, res) => {
+    res.render('demo');
+});
+
+// 初始化数据库
+server.get('/updatesql', async (req, res) => { 
     try {
         const filePath = path.join(__dirname, 'dataset.sql');
         const sqlContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
@@ -131,14 +136,14 @@ server.get('/demo', (req, res) => {
                 await connection.query(query);
             }
         } finally {
-            connection.release(); // 释放连接
+            connection.release(); 
         }
-
         res.send('数据库初始化成功！已执行 dataset.sql 中的所有语句。');
         res.render('demo');
+
     } catch (err) {
         console.error('初始化数据库失败:', err.message || err);
-        res.status(500).send('初始化失败: ${err.message}');
+        res.status(500).send(`初始化失败: ${err.message}`);
     }
 });
 
