@@ -82,6 +82,8 @@ server.use((req, res, next) => {
     next();
 });
 
+const caPath = 'DigiCertGlobalRootCA.crt.pem';
+const ca = fs.readFileSync(caPath);
 // 连接数据库
 const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
@@ -90,7 +92,10 @@ const pool = mysql.createPool({
     password: process.env.AZURE_MYSQL_PASSWORD,
     database: process.env.AZURE_MYSQL_DATABASE,
     port: Number(process.env.AZURE_MYSQL_PORT),
-    ssl: process.env.AZURE_MYSQL_SSL
+    ssl: {
+        ca: ca,
+        rejectUnauthorized: true 
+    }
 });
 // 使用异步函数测试数据库连接
 async function testDatabaseConnection() {
