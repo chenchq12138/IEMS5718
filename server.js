@@ -82,7 +82,7 @@ server.use((req, res, next) => {
     next();
 });
 
-const caPath = 'DigiCertGlobalRootCA.crt.pem';
+const caPath = path.join(__dirname, 'DigiCertGlobalRootCA.crt.pem');
 const ca = fs.readFileSync(caPath);
 // 连接数据库
 const mysql = require('mysql2/promise');
