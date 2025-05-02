@@ -89,7 +89,8 @@ const pool = mysql.createPool({
     user: process.env.AZURE_MYSQL_USER,
     password: process.env.AZURE_MYSQL_PASSWORD,
     database: process.env.AZURE_MYSQL_DATABASE,
-    port: Number(process.env.AZURE_MYSQL_PORT)
+    port: Number(process.env.AZURE_MYSQL_PORT),
+    ssl: process.env.AZURE_MYSQL_SSL
 });
 // 使用异步函数测试数据库连接
 async function testDatabaseConnection() {
