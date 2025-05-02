@@ -125,40 +125,30 @@ server.get('/demo', (req, res) => {
     res.render('demo');
 });
 
-// 初始化数据库
-server.get('/updatesql', async (req, res) => { 
-    try {
-        const filePath = path.join(__dirname, 'dataset.sql');
-        const sqlContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
-
-        const queries = sqlContent
-            .split(';')
-            .map(query => query.trim())
-            .filter(query => query.length > 0); 
-
-        const connection = await pool.getConnection();
-        try {
-            for (const query of queries) {
-                await connection.query(query);
-            }
-        } finally {
-            connection.release(); 
-        }
-        res.send('数据库初始化成功！已执行 dataset.sql 中的所有语句。');
-        res.render('demo');
-
-    } catch (err) {
-        console.error('初始化数据库失败:', err.message || err);
-        res.status(500).send(`初始化失败: ${err.message}`);
-    }
-});
-
 // 登录界面
 server.get('/login', async (req, res) => {
     res.render('login');
 });
 
 // 主界面
+// server.get('/', async (req, res) => {
+//     try {
+//         // 获取分类数据
+//         const [categoriesResult] = await pool.execute('SELECT * FROM categories');
+//         const categories = categoriesResult;
+
+//         // 获取商品数据
+//         const [productsResult] = await pool.execute('SELECT * FROM products');
+//         const products = productsResult;
+
+//         // 渲染页面
+//         res.render('main', { categories, products });
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// });
+
 server.get('/', async (req, res) => {
     try {
         // 获取分类数据
@@ -169,8 +159,14 @@ server.get('/', async (req, res) => {
         const [productsResult] = await pool.execute('SELECT * FROM products');
         const products = productsResult;
 
-        // 渲染页面
-        res.render('main', { categories, products });
+        // 检查用户是否为管理员
+        if (res.locals.user.admin) {
+            // 如果是管理员，渲染管理员界面
+            res.render('main-admin', { categories, products });
+        } else {
+            // 如果不是管理员，渲染普通用户界面
+            res.render('main', { categories, products });
+        }
     } catch (error) {
         console.error('Error fetching data:', error);
         res.status(500).send('Internal Server Error');
