@@ -162,7 +162,7 @@ server.get('/', async (req, res) => {
         // 检查用户是否为管理员
         if (res.locals.user.admin) {
             // 如果是管理员，渲染管理员界面
-            res.render('main-admin', { categories, products });
+            res.render('adminpanel', { categories, products });
         } else {
             // 如果不是管理员，渲染普通用户界面
             res.render('main', { categories, products });
