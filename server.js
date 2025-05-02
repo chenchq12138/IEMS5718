@@ -17,6 +17,7 @@ server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'ejs');
 server.use(express.static(path.join(__dirname, 'public')));
 server.use(express.json());
+server.disable('x-powered-by');
 
 function setUserStatus(req, res, next) {
     // 假设用户信息存储在会话中
@@ -131,24 +132,6 @@ server.get('/login', async (req, res) => {
 });
 
 // 主界面
-// server.get('/', async (req, res) => {
-//     try {
-//         // 获取分类数据
-//         const [categoriesResult] = await pool.execute('SELECT * FROM categories');
-//         const categories = categoriesResult;
-
-//         // 获取商品数据
-//         const [productsResult] = await pool.execute('SELECT * FROM products');
-//         const products = productsResult;
-
-//         // 渲染页面
-//         res.render('main', { categories, products });
-//     } catch (error) {
-//         console.error('Error fetching data:', error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
-
 server.get('/', async (req, res) => {
     try {
         // 获取分类数据
