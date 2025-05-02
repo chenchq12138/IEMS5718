@@ -1,7 +1,7 @@
-CREATE USER test_user@'%' IDENTIFIED BY '123456';
-GRANT ALL PRIVILEGES ON shopping_database.* TO test_user@'%';
+-- CREATE USER test_user@'%' IDENTIFIED BY '123456';
+-- GRANT ALL PRIVILEGES ON shopping_database.* TO test_user@'%';
 
-CREATE DATABASE shopping_database;
+-- CREATE DATABASE shopping_database;
 
 USE shopping_database;
 
