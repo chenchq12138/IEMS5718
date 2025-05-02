@@ -85,7 +85,7 @@ server.use((req, res, next) => {
 // 连接数据库
 const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
-    host: localhost,
+    host: 'localhost',
     user: 'sppxmfjvxu',
     password: '7Emx$4pgvk8Vfns4',
     database: 'shopping_database'
