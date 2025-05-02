@@ -85,10 +85,11 @@ server.use((req, res, next) => {
 // 连接数据库
 const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'sppxmfjvxu',
-    password: '7Emx$4pgvk8Vfns4',
-    database: 'shopping_database'
+    host: process.env.AZURE_MYSQL_HOST,
+    user: process.env.AZURE_MYSQL_USER,
+    password: process.env.AZURE_MYSQL_PASSWORD,
+    database: process.env.AZURE_MYSQL_DATABASE,
+    port: Number(process.env.AZURE_MYSQL_PORT)
 });
 // 使用异步函数测试数据库连接
 async function testDatabaseConnection() {
